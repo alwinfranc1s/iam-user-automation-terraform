@@ -3,6 +3,10 @@ mock_provider "aws" {}
 run "default_s3_read_policy" {
   command = plan
 
+  variables {
+    iam_user_name = "s3-read-user"
+  }
+
   assert {
     condition     = var.aws_region == "ap-south-1"
     error_message = "The default AWS region must be ap-south-1."
@@ -28,6 +32,7 @@ run "custom_policy" {
   command = plan
 
   variables {
+    iam_user_name  = "s3-read-user"
     s3_read_policy = "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"s3:GetObject\",\"Resource\":\"arn:aws:s3:::example-bucket/*\"}]}"
   }
 

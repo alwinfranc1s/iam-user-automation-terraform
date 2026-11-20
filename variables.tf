@@ -7,7 +7,6 @@ variable "aws_region" {
 variable "iam_user_name" {
   description = "Name of the IAM user to create."
   type        = string
-  default     = "s3-read-user"
 }
 
 variable "s3_read_policy" {
