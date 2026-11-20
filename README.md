@@ -5,22 +5,26 @@ Creates an IAM user with an inline S3 read-only policy. By default, the policy
 allows S3 `Get`, `List`, and `Describe` actions on all resources; it does not
 grant write access. Override `s3_read_policy` with a JSON IAM policy to restrict
 access to specific resources or otherwise change the permissions. The default
-region is `ap-south-1`, and the default user name is `s3-read-user`.
+region is `ap-south-1`.
 
 ## Deploy
 
-Install Terraform 1.7 or later and configure AWS credentials with permission to
-create IAM users and manage inline user policies. Then run:
+Install Terraform 1.7 or later and the AWS CLI, then configure AWS credentials
+with permission to check IAM users (`iam:GetUser`), create IAM users, and manage
+inline user policies. Initialize Terraform and run the interactive deploy
+script:
 
 ```sh
 terraform init
-terraform plan
-terraform apply
+./deploy.sh
 ```
 
-Set `aws_region`, `iam_user_name`, or `s3_read_policy` using Terraform variables
-when the defaults are not appropriate. IAM is a global service; the region
-configures the AWS provider.
+The script asks for a username, checks whether it already exists, and asks
+again if it does. It then runs `terraform apply` with the available username.
+The availability check cannot prevent another actor from creating that name
+before Terraform applies it. IAM is a global service; `aws_region` configures
+the AWS provider. Set `aws_region` or `s3_read_policy` using Terraform variables
+when the defaults are not appropriate.
 
 ## Verify permissions
 
